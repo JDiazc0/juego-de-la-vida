@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import "../utils/Grid.css";
 class Box extends Component {
   selectBox = () => {
     this.props.selectBox(this.props.row, this.props.col);
@@ -17,7 +17,7 @@ class Box extends Component {
 }
 
 export default function Grid(props) {
-  const width = props.cols * 14;
+  const width = props.cols * 20;
 
   const getBoxClass = (state) => {
     switch (state) {
@@ -48,8 +48,10 @@ export default function Grid(props) {
   );
 
   return (
-    <div className="grid" style={{ width }}>
-      {rowsArr}
+    <div className="super">
+      <div className="grid" style={{ width }}>
+        {rowsArr}
+      </div>
     </div>
   );
 }

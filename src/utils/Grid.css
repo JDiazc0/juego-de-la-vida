@@ -1,0 +1,35 @@
+.super {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid {
+  margin: 5rem;
+  line-height: 0;
+}
+
+.box {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  cursor: crosshair;
+}
+
+.box.low {
+  background-color: lightgreen;
+}
+
+.box.medium {
+  background-color: yellow;
+}
+
+.box.high {
+  background-color: red;
+}
+
+.box.off {
+  background-color: white;
+  border: 1px solid #ddd;
+}
