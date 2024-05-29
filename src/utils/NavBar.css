@@ -46,8 +46,7 @@
   background-color: #e8e8e8;
 }
 
-.btn:hover,
-.btn.pressed:hover {
+.btn:hover {
   background-color: #dbffff;
 }
 
@@ -76,4 +75,17 @@
 
 .select.typeCell {
   width: 130px;
+}
+
+.btn.isStepBack,
+.btn.isStepBack:hover {
+  pointer-events: none;
+  background-color: #f4f4f4;
+  color: #737373;
+}
+
+.playing {
+  pointer-events: none;
+  background-color: #f4f4f4;
+  color: #737373;
 }
