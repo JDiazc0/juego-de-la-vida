@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Grid from "./Grid";
 import NavBar from "./NavBar";
+import Info from "./Info";
+import { countNeighbors, handleBirth, handleDeath } from "../utils/rules";
 
 /**Clonar arreglo */
 const arrayClone = (arr) => {
@@ -31,7 +33,38 @@ export default function GameOfLife() {
   /**Captura el tipo de celula seleccionada (Clase baja, media, alta) */
   const handleSelectTypeCell = (event) => {
     const value = event.target.value;
-    setSelectedType(value === "1" ? "low" : value === "2" ? "medium" : "high");
+    switch (value) {
+      case "1":
+        setSelectedType("low");
+        break;
+      case "2":
+        setSelectedType("medium");
+        break;
+      case "3":
+        setSelectedType("high");
+        break;
+      case "4":
+        setSelectedType("hospital");
+        break;
+      case "5":
+        setSelectedType("industrial");
+        break;
+      case "6":
+        setSelectedType("drug");
+        break;
+      case "7":
+        setSelectedType("commercial");
+        break;
+      case "8":
+        setSelectedType("school");
+        break;
+      case "9":
+        setSelectedType("transport");
+        break;
+      default:
+        setSelectedType("off");
+        break;
+    }
   };
 
   /**Captura y parsea la velocidad seleccionada */
@@ -108,58 +141,18 @@ export default function GameOfLife() {
   /**Función para avanzar un paso en la transición y aplica las reglas */
   const play = () => {
     setPrevGrid(arrayClone(gridRef.current));
-    let g = arrayClone(gridRef.current);
-    let g2 = arrayClone(gridRef.current);
 
-    for (let i = 0; i < gridSize.rows; i++) {
-      for (let j = 0; j < gridSize.cols; j++) {
-        let countLow = 0;
-        let countMedium = 0;
-        let countHigh = 0;
+    const newGrid = gridFull.map((rowArr, rowIdx) =>
+      rowArr.map((cell, colIdx) => {
+        const neighbors = countNeighbors(gridFull, gridSize, rowIdx, colIdx);
+        const newCell = handleBirth(cell, neighbors);
+        return handleDeath(newCell, neighbors);
+      })
+    );
 
-        const neighbors = [
-          [i - 1, j],
-          [i - 1, j - 1],
-          [i - 1, j + 1],
-          [i, j + 1],
-          [i, j - 1],
-          [i + 1, j],
-          [i + 1, j - 1],
-          [i + 1, j + 1],
-        ];
-
-        neighbors.forEach(([x, y]) => {
-          if (x >= 0 && x < gridSize.rows && y >= 0 && y < gridSize.cols) {
-            if (g[x][y] === "low") countLow++;
-            if (g[x][y] === "medium") countMedium++;
-            if (g[x][y] === "high") countHigh++;
-          }
-        });
-
-        const totalAlive = countLow + countMedium + countHigh;
-
-        if (g[i][j] === "off") {
-          if (totalAlive === 3) {
-            g2[i][j] =
-              countHigh > countMedium && countHigh > countLow
-                ? "high"
-                : countMedium > countLow
-                ? "medium"
-                : "low";
-          }
-        } else {
-          if (totalAlive < 2 || totalAlive > 3) {
-            g2[i][j] = "off";
-          }
-        }
-      }
-    }
     setIsStepBack(false);
-    setGridFull(g2);
-    setGeneration((prev) => {
-      const newGeneration = prev + 1;
-      return newGeneration;
-    });
+    setGridFull(newGrid);
+    setGeneration((prev) => prev + 1);
   };
 
   /** Activa los intervalos en base a la velocidad y actividad del juego automatico*/
@@ -202,6 +195,7 @@ export default function GameOfLife() {
         cols={gridSize.cols}
         selectBox={selectBox}
       />
+      <Info generation={generation} />
     </div>
   );
 }
