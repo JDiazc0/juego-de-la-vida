@@ -1,0 +1,39 @@
+.info,
+.reglas {
+  margin: 0 10rem;
+}
+
+.ex {
+  cursor: default;
+}
+.super.ex {
+  height: 100px;
+}
+
+.ul-info {
+  padding: 0;
+  font-weight: 300;
+}
+
+.ul-info li {
+  display: flex;
+}
+
+.ul-info li p {
+  width: 150px;
+}
+
+.reglas ul li p {
+  margin: 10px;
+  font-weight: 300;
+}
+.grid-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 150px;
+}
+
+.grid-example h4 {
+  text-align: center;
+}

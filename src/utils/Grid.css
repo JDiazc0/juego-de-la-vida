@@ -18,15 +18,48 @@
 }
 
 .box.low {
-  background-color: lightgreen;
+  background-color: #ff8e8e;
+  border: 0.5px dashed #ff0000;
 }
 
 .box.medium {
-  background-color: yellow;
+  background-color: #f5ff6a;
+  border: 0.5px dashed #ffe100;
 }
 
 .box.high {
-  background-color: red;
+  background-color: #84ff80;
+  border: 0.5px dashed #09ff00;
+}
+
+.box.hospital {
+  background-color: #a1d0f9;
+  border: 0.5px dashed #0e8efe;
+}
+
+.box.industrial {
+  background-color: #f9a1e6;
+  border: 0.5px dashed #fd0fca;
+}
+
+.box.commercial {
+  background-color: #d286ff;
+  border: 0.5px dashed #a201ff;
+}
+
+.box.transport {
+  background-color: #f9ab53;
+  border: 0.5px dashed #ff8800;
+}
+
+.box.school {
+  background-color: #a2eafb;
+  border: 0.5px dashed #00d0ff;
+}
+
+.box.drug {
+  background-color: #a19275;
+  border: 0.5px dashed #443f33;
 }
 
 .box.off {
