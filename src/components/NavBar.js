@@ -92,6 +92,12 @@ export default function NavBar(props) {
                 <option value="1">Color Clase Baja</option>
                 <option value="2">Color Clase Media</option>
                 <option value="3">Color Clase Alta</option>
+                <option value="4">Hospital</option>
+                <option value="5">Industrial</option>
+                <option value="6">Punto de Droga</option>
+                <option value="7">Comercial</option>
+                <option value="8">Escolar</option>
+                <option value="9">Transporte</option>
               </select>
             </li>
           </ul>

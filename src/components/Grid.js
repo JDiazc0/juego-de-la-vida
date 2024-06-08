@@ -27,6 +27,18 @@ export default function Grid(props) {
         return "box medium";
       case "high":
         return "box high";
+      case "hospital":
+        return "box hospital";
+      case "industrial":
+        return "box industrial";
+      case "drug":
+        return "box drug";
+      case "transport":
+        return "box transport";
+      case "school":
+        return "box school";
+      case "commercial":
+        return "box commercial";
       default:
         return "box off";
     }
@@ -48,7 +60,7 @@ export default function Grid(props) {
   );
 
   return (
-    <div className="super">
+    <div className={`super ${props.ex ? "ex" : ""}`}>
       <div className="grid" style={{ width }}>
         {rowsArr}
       </div>
