@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Grid from "./Grid";
 import NavBar from "./NavBar";
 import Info from "./Info";
@@ -134,7 +134,7 @@ export default function GameOfLife() {
   };
 
   /**Función para avanzar un paso en la transición y aplica las reglas */
-  const play = () => {
+  const play = useCallback(() => {
     setPrevGrid(arrayClone(gridRef.current));
 
     const newGrid = gridFull.map((rowArr, rowIdx) =>
@@ -148,7 +148,7 @@ export default function GameOfLife() {
     setIsStepBack(false);
     setGridFull(newGrid);
     setGeneration((prev) => prev + 1);
-  };
+  }, [gridFull, gridSize]);
 
   /** Activa los intervalos en base a la velocidad y actividad del juego automatico*/
   useEffect(() => {
@@ -163,7 +163,7 @@ export default function GameOfLife() {
         clearInterval(interval);
       }
     };
-  }, [isPlaying, speed]);
+  }, [isPlaying, speed, play]);
 
   /** Activa o desactiva el juego automatico*/
   const playButton = () => {
