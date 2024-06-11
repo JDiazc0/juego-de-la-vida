@@ -27,14 +27,10 @@ export default function Grid(props) {
         return "box medium";
       case "high":
         return "box high";
-      case "hospital":
-        return "box hospital";
       case "industrial":
         return "box industrial";
       case "drug":
         return "box drug";
-      case "transport":
-        return "box transport";
       case "school":
         return "box school";
       case "commercial":

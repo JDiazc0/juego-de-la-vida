@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Grid from "./Grid";
 import NavBar from "./NavBar";
 import Info from "./Info";
-import { countNeighbors, handleBirth, handleDeath } from "../utils/rules";
+import { countNeighbors, trasitionRules } from "../utils/rules";
 
 /**Clonar arreglo */
 const arrayClone = (arr) => {
@@ -44,22 +44,16 @@ export default function GameOfLife() {
         setSelectedType("high");
         break;
       case "4":
-        setSelectedType("hospital");
-        break;
-      case "5":
         setSelectedType("industrial");
         break;
-      case "6":
+      case "5":
         setSelectedType("drug");
         break;
-      case "7":
+      case "6":
         setSelectedType("commercial");
         break;
-      case "8":
+      case "7":
         setSelectedType("school");
-        break;
-      case "9":
-        setSelectedType("transport");
         break;
       default:
         setSelectedType("off");
@@ -78,7 +72,7 @@ export default function GameOfLife() {
   const handleGridSize = (event) => {
     const size = event.target.value;
     const [rows, cols] =
-      size === "1" ? [20, 20] : size === "2" ? [50, 40] : [70, 50];
+      size === "1" ? [20, 20] : size === "2" ? [40, 40] : [50, 50];
     setGridSize({ rows, cols });
     setGridFull(
       Array(rows)
@@ -135,6 +129,7 @@ export default function GameOfLife() {
           : "off";
       })
     );
+    setGeneration(0);
     setGridFull(newGrid);
   };
 
@@ -145,8 +140,8 @@ export default function GameOfLife() {
     const newGrid = gridFull.map((rowArr, rowIdx) =>
       rowArr.map((cell, colIdx) => {
         const neighbors = countNeighbors(gridFull, gridSize, rowIdx, colIdx);
-        const newCell = handleBirth(cell, neighbors);
-        return handleDeath(newCell, neighbors);
+        const newCell = trasitionRules(cell, neighbors);
+        return newCell;
       })
     );
 

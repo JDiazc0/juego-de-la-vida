@@ -4,12 +4,10 @@ export const countNeighbors = (grid, gridSize, x, y) => {
     low: 0,
     medium: 0,
     high: 0,
-    hospital: 0,
     industrial: 0,
     drug: 0,
     commercial: 0,
     school: 0,
-    transport: 0,
     off: 0,
     total: 0,
   };
@@ -36,94 +34,93 @@ export const countNeighbors = (grid, gridSize, x, y) => {
   return counts;
 };
 
-/**Nacimientos */
-export const handleBirth = (cell, neighbors) => {
+export const trasitionRules = (cell, neighbors) => {
+  /** Nacimientos */
   if (cell === "off") {
-    /** Casos en interacción entre celulas
-     * Nace una célula si tiene 3 vecinos de una misma clase, nacerá perteneciente a esa clase
-     * Nace una célula si tiene dos clases vecinas cumpliendo la condición anterior, nacerá en la clase social más baja
-     */
-    if (neighbors.low === 3 && neighbors.medium === 3) return "low";
-    if (neighbors.low === 3 && neighbors.high === 3) return "low";
-    if (neighbors.medium === 3 && neighbors.high === 3) return "medium";
+    // Clase baja
     if (neighbors.low === 3) return "low";
-    if (neighbors.medium === 3) return "medium";
-    if (neighbors.high === 3) return "high";
-
-    /** Casos nacimiento de células con clase social en interacción con recursos
-     * Nace célula clase baja si tiene 1 vecino droga, y 2 vecinos clase baja
-     * Nace célula clase media si tiene 2 vecinos industrial y dos vecinos clase media
-     * Nace célula clase media si tiene 1 vecino industrial, 1 vecino transporte y 1 vecino clase media
-     */
     if (neighbors.drug === 1 && neighbors.low === 2) return "low";
+
+    // Clase media
+    if (neighbors.medium === 3) return "medium";
     if (neighbors.industrial === 2 && neighbors.medium === 2) return "medium";
-    if (
-      neighbors.industrial === 1 &&
-      neighbors.transport === 1 &&
-      neighbors.medium === 1
-    )
-      return "medium";
 
-    /** Nacimiento de recursos
-     * Escuela, nace en caso de estar rodeada por uno o más de cada clase
-     * Droga, nace en caso de estar rodeada por 4 o más celulas de clase baja
-     * Industrial, una célula se convierte en industrial si esta roeada por 4 o más celulas clase media
-     * Comercial, una célula se convierte en comercial si esta rodeada por 4 o más celulas clase alta
-     * Transpote, una célula se convierte en transporte si esta rodeada por 1 vecina clase industrial o escuela y 2 o 3 vecinos clase media o baja
-     */
-    if (neighbors.low >= 1 && neighbors.medium >= 1 && neighbors.high >= 1)
+    // Clase alta
+    if (neighbors.high === 3) return "high";
+    if (neighbors.high >= 2 && neighbors.commercial >= 1) return "high";
+
+    // Escuela
+    if (
+      neighbors.low >= 1 &&
+      neighbors.medium >= 1 &&
+      neighbors.high >= 1 &&
+      neighbors.school === 0
+    )
       return "school";
+    if (neighbors.medium >= 1 && neighbors.industrial >= 1) return "school";
+
+    // Zona peligrosa
     if (neighbors.low >= 4) return "drug";
+
+    // Industrial
     if (neighbors.medium >= 4) return "industrial";
-    if (neighbors.high >= 4) return "commercial";
-    if (
-      (neighbors.industrial === 1 || neighbors.school === 1) &&
-      (neighbors.medium >= 2 || neighbors.low >= 2) &&
-      (neighbors.medium <= 3 || neighbors.low <= 3)
-    )
-      return "transport";
+
+    // Zona comercial
+    if (neighbors.high >= 2) return "commercial";
   }
-  return cell;
-};
-
-/** Muertes */
-export const handleDeath = (cell, neighbors) => {
+  /** Muertes y mutaciones */
   if (cell !== "off") {
-    /** Casos entre células con clase social
-     *  Muerte por sobrepoblación, muere en caso de tener 4 vecinos o más de su misma clase
-     *  Muere en caso de tener más de 4 vecinos y ninguno ser de su misma clase social
-     */
-    if (
-      cell === "low" &&
-      (neighbors.low >= 4 || neighbors.medium + neighbors.high > 4)
-    )
-      return "off";
-    if (
-      cell === "medium" &&
-      (neighbors.medium >= 4 || neighbors.low + neighbors.high > 4)
-    )
-      return "off";
-    if (
-      cell === "high" &&
-      (neighbors.high >= 2 || neighbors.medium + neighbors.low > 4)
-    )
-      return "off";
+    // Clase baja
+    if (cell === "low") {
+      // Muerte
+      if (neighbors.low >= 3 || neighbors.medium + neighbors.high > 4)
+        return "off";
+      if (neighbors.low >= 2 && neighbors.drug >= 1) return "off";
+    }
 
-    /** Muerte de recursos
-     * Escuela, muere si tiene 2 o menos vecinos con clase social vivos
-     * Droga, muere si tiene 1 vecino o más vivos de tipo recurso droga
-     * Industrial, muere si tiene 2 o menos vecinos con clase social vivos
-     * Comercial, muere si tene 3 o más vecinos de clase baja
-     * Transporte, muere si tiene 2 o menos vecinos vivos
-     */
-    if (
-      (cell === "school" || cell === "industrial") &&
-      neighbors.low + neighbors.medium + neighbors.high <= 2
-    )
-      return "off";
-    if (cell === "drug" && neighbors.drug >= 1) return "off";
-    if (cell === "commercial" && neighbors.low >= 3) return "off";
-    if (cell === "transport" && neighbors.total <= 2) return "off";
+    // Clase media
+    if (cell === "medium") {
+      // Muerte
+      if (neighbors.medium >= 4 || neighbors.low + neighbors.high > 4)
+        return "off";
+    }
+
+    // Clase alta
+    if (cell === "high") {
+      // Muerte
+      if (neighbors.high >= 2 || neighbors.medium + neighbors.low > 4)
+        return "off";
+      if (neighbors.low >= 2) return "off";
+    }
+
+    // Escuela
+    if (cell === "school") {
+      //Muerte
+      if (neighbors.low + neighbors.medium + neighbors.high <= 1) return "off";
+      if (neighbors.school >= 2) return "off";
+    }
+
+    // Droga
+    if (cell === "drug") {
+      // Muerte
+      if (neighbors.drug >= 2) return "off";
+      if (neighbors.low >= 2 && neighbors.drug >= 2) return "off";
+      if (neighbors.low <= 1) return "off";
+    }
+
+    // Industrial
+    if (cell === "industrial") {
+      //Muerte
+      if (neighbors.medium + neighbors.low <= 2) return "off";
+    }
+
+    // Comercial
+    if (cell === "commercial") {
+      if (neighbors.low >= 3) return "off";
+      if (neighbors.commercial >= 4) return "off";
+      if (neighbors.medium + neighbors.low <= 2) return "off"; //Cuestionable
+      if (neighbors.high <= 1) return "off";
+    }
   }
   return cell;
 };
@@ -135,38 +132,116 @@ export const info = [
   { text: "Clase baja", class: "low" },
   { text: "Zona industrial", class: "industrial" },
   { text: "Zona escolar", class: "school" },
-  { text: "Zona hospitalaria", class: "hospital" },
-  { text: "Transporte", class: "transport" },
+  { text: "Zona comercial", class: "commercial" },
   { text: "Zona peligrosa", class: "drug" },
 ];
 
 export const rule1 = [
   {
     description:
-      "Una célula mantendra su estado si almenos 2 o 3 vecinos son de su misma clase social, de lo contrario morirá",
+      "1. Una célula clase baja nacera si tiene 3 vecinos de su misma clase",
     gridI: [
       ["off", "low", "off"],
       ["off", "low", "off"],
       ["off", "low", "off"],
     ],
     gridF: [
-      ["off", "off", "off"],
+      ["off", "low", "off"],
       ["low", "low", "low"],
+      ["off", "low", "off"],
+    ],
+  },
+  {
+    description: `2. Una célula clase baja nacera si tiene 1 vecino "Zona peligrosa" y 2 vecinos clase baja `,
+    gridI: [
+      ["off", "low", "off"],
+      ["low", "drug", "low"],
+      ["off", "low", "off"],
+    ],
+    gridF: [
+      ["low", "off", "low"],
+      ["off", "drug", "off"],
+      ["low", "off", "low"],
+    ],
+  },
+  {
+    description:
+      "3. Una célula clase media nacera si tiene 3 vecinos de su misma clase",
+    gridI: [
+      ["off", "medium", "off"],
+      ["off", "medium", "off"],
+      ["off", "medium", "off"],
+    ],
+    gridF: [
+      ["off", "medium", "off"],
+      ["medium", "medium", "medium"],
+      ["off", "medium", "off"],
+    ],
+  },
+  {
+    description: `4. Una célula clase media nacera si tiene 2 vecino "Zona industrial" y 2 vecinos clase media `,
+    gridI: [
+      ["industrial", "medium", "industrial"],
+      ["off", "off", "medium"],
+      ["off", "off", "off"],
+    ],
+    gridF: [
+      ["off", "medium", "off"],
+      ["school", "medium", "medium"],
       ["off", "off", "off"],
     ],
   },
   {
     description:
-      "Una célula vivirá si por lo menos 3 o más y 4 o menos vecinos son de su misma clase",
+      "5. Una célula clase alta nacera si tiene 3 vecinos de su misma clase",
     gridI: [
-      ["off", "low", "off"],
-      ["low", "off", "low"],
+      ["off", "high", "off"],
+      ["off", "high", "off"],
+      ["off", "high", "off"],
+    ],
+    gridF: [
+      ["off", "high", "off"],
+      ["high", "high", "high"],
+      ["off", "high", "off"],
+    ],
+  },
+  {
+    description: `6. Una célula clase alta nacera si tiene 1 o más vecino "Zona comercial" y 2 o más vecinos clase alta `,
+    gridI: [
+      ["off", "off", "off"],
+      ["high", "commercial", "high"],
+      ["off", "off", "off"],
+    ],
+    gridF: [
+      ["off", "high", "off"],
+      ["high", "off", "high"],
+      ["off", "high", "off"],
+    ],
+  },
+  {
+    description: `7. Una célula "Zona escolar" nacera si tiene al menos 1 vecino cada clase social y 0 zonas escolares`,
+    gridI: [
+      ["off", "high", "off"],
+      ["off", "medium", "off"],
       ["off", "low", "off"],
     ],
     gridF: [
+      ["off", "high", "off"],
+      ["school", "medium", "school"],
       ["off", "low", "off"],
-      ["low", "low", "low"],
-      ["off", "low", "off"],
+    ],
+  },
+  {
+    description: `8. Una célula "Zona escolar" nacera si tiene 1 o más vecinos clase media y 1 o más vecinos "Zona industrial" `,
+    gridI: [
+      ["off", "off", "off"],
+      ["industrial", "medium", "off"],
+      ["off", "off", "off"],
+    ],
+    gridF: [
+      ["school", "school", "off"],
+      ["off", "medium", "off"],
+      ["school", "school", "off"],
     ],
   },
 ];

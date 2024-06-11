@@ -27,12 +27,22 @@ export default function NavBar(props) {
     speed(event);
   };
 
+  const rules = () => {
+    const url = window.location.origin + "/transition-rules";
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <>
       <header className="header">
         <nav className="nav">
           <h2 className="nav-h2">Game of Life</h2>
           <ul className="nav-ul">
+            <li>
+              <button className="btn" onClick={rules}>
+                Rules
+              </button>
+            </li>
             <li>
               <button className="btn" onClick={playButton}>
                 {isPlaying === true ? "Pause" : "Play"}
@@ -80,8 +90,8 @@ export default function NavBar(props) {
                 onChange={handleSelectGrid}
                 defaultValue="1">
                 <option value="1">20x20</option>
-                <option value="2">50x40</option>
-                <option value="3">70x50</option>
+                <option value="2">40x40</option>
+                <option value="3">50x50</option>
               </select>
             </li>
             <li>
@@ -92,12 +102,10 @@ export default function NavBar(props) {
                 <option value="1">Color Clase Baja</option>
                 <option value="2">Color Clase Media</option>
                 <option value="3">Color Clase Alta</option>
-                <option value="4">Hospital</option>
-                <option value="5">Industrial</option>
-                <option value="6">Punto de Droga</option>
-                <option value="7">Comercial</option>
-                <option value="8">Escolar</option>
-                <option value="9">Transporte</option>
+                <option value="4">Industrial</option>
+                <option value="5">Punto de Droga</option>
+                <option value="6">Comercial</option>
+                <option value="7">Escolar</option>
               </select>
             </li>
           </ul>
