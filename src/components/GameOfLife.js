@@ -121,11 +121,19 @@ export default function GameOfLife() {
       rowArr.map(() => {
         const rand = Math.random();
         return rand < 0.1
-          ? "low"
+          ? "industrial"
           : rand < 0.2
-          ? "medium"
+          ? "school"
           : rand < 0.3
+          ? "commercial"
+          : rand < 0.4
+          ? "drug"
+          : rand < 0.5
           ? "high"
+          : rand < 0.6
+          ? "medium"
+          : rand < 0.7
+          ? "low"
           : "off";
       })
     );
