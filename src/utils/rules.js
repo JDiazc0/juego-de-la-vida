@@ -44,12 +44,24 @@ export const trasitionRules = (cell, neighbors) => {
       neighbors.low > neighbors.medium
     )
       return "low";
+    if (
+      neighbors.total <= 5 &&
+      neighbors.medium < neighbors.low &&
+      neighbors.drug > neighbors.industrial
+    )
+      return "low";
 
     // Clase media
     if (
       neighbors.industrial >= 2 &&
       neighbors.industrial <= 3 &&
       neighbors.medium > neighbors.low
+    )
+      return "medium";
+    if (
+      neighbors.total <= 5 &&
+      neighbors.medium > neighbors.low &&
+      neighbors.industrial >= neighbors.drug
     )
       return "medium";
 
@@ -60,6 +72,12 @@ export const trasitionRules = (cell, neighbors) => {
       neighbors.high >= 1 &&
       neighbors.drug === 0 &&
       neighbors.low === 0
+    )
+      return "high";
+    if (
+      neighbors.total <= 5 &&
+      neighbors.medium === 0 &&
+      (neighbors.low === 0) & (neighbors.drug === 0)
     )
       return "high";
 
