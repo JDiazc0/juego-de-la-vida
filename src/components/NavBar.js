@@ -1,7 +1,9 @@
 import React from "react";
 import "../utils/NavBar.css";
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar(props) {
+  const navigate = useNavigate();
   const {
     playButton,
     isPlaying,
@@ -28,8 +30,9 @@ export default function NavBar(props) {
   };
 
   const rules = () => {
-    const url = window.location.origin + "/transition-rules";
-    window.open(url, "_blank", "noopener,noreferrer");
+    /*const url = window.location.origin + "/transition-rules";
+    window.open(url, "_blank", "noopener,noreferrer");*/
+    navigate("/transition-rules");
   };
 
   return (
