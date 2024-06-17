@@ -1,7 +1,7 @@
 import React from "react";
 import "../utils/Info.css";
 
-import { info } from "../utils/rules.js";
+import { info } from "../utils/infoRules.js";
 
 export default function Info(props) {
   const { generation } = props;
