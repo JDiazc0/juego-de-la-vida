@@ -40,38 +40,38 @@ export default function NavBar(props) {
           <ul className="nav-ul">
             <li>
               <button className="btn" onClick={rules}>
-                Rules
+                Reglas
               </button>
             </li>
             <li>
               <button className="btn" onClick={playButton}>
-                {isPlaying === true ? "Pause" : "Play"}
+                {isPlaying === true ? "Pausar" : "Iniciar"}
               </button>
             </li>
             <li>
               <button
                 className={`btn ${isStepBack ? "isStepBack" : ""}`}
                 onClick={stepBack}>
-                Step Back
+                Regresar
               </button>
             </li>
             <li>
               <button
                 className={`btn ${isPlaying ? "playing" : ""}`}
                 onClick={nextStep}>
-                Next Step
+                Avanzar
               </button>
             </li>
             <li>
               <button className="btn" onClick={clear}>
-                Clear
+                Limpiar
               </button>
             </li>
             <li>
               <button
                 className={`btn ${isPlaying ? "playing" : ""}`}
                 onClick={seed}>
-                Seed
+                Semilla
               </button>
             </li>
             <li>
@@ -80,8 +80,8 @@ export default function NavBar(props) {
                 onChange={handleSelectSpeed}
                 defaultValue="1000">
                 <option value="1000">Normal</option>
-                <option value="2000">Slow</option>
-                <option value="500">Fast</option>
+                <option value="2000">Lento</option>
+                <option value="500">Rapido</option>
               </select>
             </li>
             <li>
@@ -102,10 +102,10 @@ export default function NavBar(props) {
                 <option value="1">Color Clase Baja</option>
                 <option value="2">Color Clase Media</option>
                 <option value="3">Color Clase Alta</option>
-                <option value="4">Industrial</option>
-                <option value="5">Punto de Droga</option>
-                <option value="6">Comercial</option>
-                <option value="7">Escolar</option>
+                <option value="4">Zona Industrial</option>
+                <option value="5">Zona Peligrosa</option>
+                <option value="6">Zona Comercial</option>
+                <option value="7">Zona Escolar</option>
               </select>
             </li>
           </ul>
