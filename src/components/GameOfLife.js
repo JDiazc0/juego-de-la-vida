@@ -137,6 +137,7 @@ export default function GameOfLife() {
           : "off";
       })
     );
+    setIsStepBack(true);
     setGeneration(0);
     setGridFull(newGrid);
   };
