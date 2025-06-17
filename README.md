@@ -1,6 +1,7 @@
 # Juego de la Vida
 
 Este proyecto adapta reglas del juego de la vida para simular el crecimiento de una ciudad, integrando conceptos de segregación dinámica y modelos basados en agentes aplicados a sistemas geográficos.
+[Author](#Autor)
 
 ## Pasos para clonar el repositorio e iniciar el proyecto
 
